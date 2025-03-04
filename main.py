@@ -49,7 +49,7 @@ def main():
         disc = Discriminator(config['training']['img_channels']).to(args.device)
 
         gcriterion = GeneratorLoss().to(args.device)
-        dcriterion = Discriminator().to(args.device)
+        dcriterion = DiscriminatorLoss().to(args.device)
 
         if args.dataset == 'mnist':
             transforms = T.Compose([
