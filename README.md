@@ -43,7 +43,7 @@ Ensure you have **PyTorch** and **CUDA** installed.
 
 To train **Diffusion-GAN** from scratch, run:
 ```bash
-python scripts/train.py --dataset path/to/data --epochs 100 --batch_size 64
+python main --mode train --device cuda --dataset cifar --optimizer adam --glr 0.0001 --dlr 0.0002 --epochs 100
 ```
 
 - Modify hyperparameters in `configs/config.yaml`.
