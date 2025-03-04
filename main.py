@@ -59,11 +59,11 @@ def main():
 
             trainset = MNIST(root='data/', train=True, transform=transforms)
         elif args.dataset == 'cifar':
-            transforms = transforms.Compose([
-                transforms.RandomHorizontalFlip(p=0.5),
-                transforms.RandomCrop(32, padding=4),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+            transforms = T.Compose([
+                T.RandomHorizontalFlip(p=0.5),
+                T.RandomCrop(32, padding=4),
+                T.ToTensor(),
+                T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
             ])
 
             trainset = CIFAR10(root='data/', train=True, transform=transforms)
