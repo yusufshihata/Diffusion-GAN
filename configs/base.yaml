@@ -1,0 +1,36 @@
+seed: 42
+device: "cuda"
+
+model:
+  generator:
+    latent_dim: 100
+    hidden_dim: 256
+    output_channels: 3
+  discriminator:
+    hidden_dim: 256
+    input_channels: 3
+
+training:
+  batch_size: 64
+  optimizer: "adam"
+  beta1: 0.5
+  beta2: 0.999
+  loss:
+    generator: "bce"
+    discriminator: "hinge"
+
+dataset:
+  name: "CIFAR10"
+  root: "./data"
+  image_size: 32
+  num_workers: 4
+
+logging:
+  save_dir: "./models"
+  checkpoint_interval: 5
+  tensorboard: true
+
+evaluation:
+  fid: true
+  inception_model: "inception_v3"
+  fid_batch_size: 32

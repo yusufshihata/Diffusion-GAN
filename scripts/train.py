@@ -7,7 +7,7 @@ from tqdm import tqdm
 from utils.diffusion_scheduler import AdaptiveDiffusionScheduler
 from utils.logger import Logger
 from scripts.inference import inference
-from scripts.utils import save_checkpoint
+from utils.checkpoints import save_checkpoint
 from metrics.fid import compute_fid_metric
 
 

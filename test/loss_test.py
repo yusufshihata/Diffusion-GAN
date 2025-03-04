@@ -1,7 +1,7 @@
 import unittest
 import torch
-from src.loss import GeneratorLoss, DiscriminatorLoss
-from src.model import Generator
+from utils.loss import GeneratorLoss, DiscriminatorLoss
+from models.generator import Generator
 
 
 class TestGeneratorLoss(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestDiscriminatorLoss(unittest.TestCase):
     def test_discriminator_loss_output(self):
         x = Generator(100, (3, 28, 28))(
             torch.randn(1, 100)
-        )  # Use the generator here to get normalized data so we can calc loss
+        )
         z = Generator(100, (3, 28, 28))(torch.randn(1, 100))
         output = self.loss(x, z)
 

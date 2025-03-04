@@ -19,7 +19,7 @@ Diffusion-GAN/
 ├── checkpoints/           # Saved models
 ├── output/                # Generated images
 ├── src/                   # Training & inference scripts
-├── utils/                 # Utility functions
+├── utils/                 # Utility functions and Loss functions
 ├── metrics/               # Project evaluation metrics
 ├── README.md              # Project documentation
 ```

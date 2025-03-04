@@ -1,0 +1,23 @@
+inherits: "base.yaml"
+
+experiment_name: "DiffusionGAN_MNIST"
+training:
+  epochs: 50
+  batch_size: 64
+  latent_dim: 100
+  checkpoint_interval: 1
+  save_dirs: "models"
+
+optimizer:
+  type: "Adam"
+  generator:
+    lr: 0.0002
+    betas: [0.5, 0.999]
+  discriminator:
+    lr: 0.0004
+    betas: [0.5, 0.999]
+
+scheduler:
+  type: "StepLR"
+  step_size: 10
+  gamma: 0.5
