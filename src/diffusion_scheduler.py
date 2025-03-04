@@ -1,8 +1,17 @@
 import torch
-from numpy import sign
+
 
 class AdaptiveDiffusionScheduler:
-    def __init__(self, beta_0=1e-4, beta_f=2e-2, max_T=1000, d_target=0.6, smoothing=0.999, C=0.7, device='cuda'):
+    def __init__(
+        self,
+        beta_0=1e-4,
+        beta_f=2e-2,
+        max_T=1000,
+        d_target=0.6,
+        smoothing=0.999,
+        C=0.7,
+        device="cuda",
+    ):
         self.beta_0 = beta_0
         self.beta_f = beta_f
         self.T = max_T
@@ -26,10 +35,17 @@ class AdaptiveDiffusionScheduler:
 
     def sample_timesteps(self, batch_size: int) -> torch.Tensor:
         current_T = min(self.T, len(self.alphas_cumprod) - 1)
-        return torch.randint(0, current_T, (batch_size,), dtype=torch.long, device=self.device)
+        return torch.randint(
+            0, current_T, (batch_size,), dtype=torch.long, device=self.device
+        )
 
-    def apply_diffusion(self, imgs: torch.Tensor, timesteps: torch.Tensor) -> torch.Tensor:
+    def apply_diffusion(
+        self, imgs: torch.Tensor, timesteps: torch.Tensor
+    ) -> torch.Tensor:
         timesteps = torch.clamp(timesteps, 0, len(self.alphas_cumprod) - 1)
         alphas_cumprod_t = self.alphas_cumprod[timesteps].view(-1, 1, 1, 1)
         noise = torch.randn_like(imgs)
-        return torch.sqrt(alphas_cumprod_t) * imgs + torch.sqrt(1 - alphas_cumprod_t) * noise
+        return (
+            torch.sqrt(alphas_cumprod_t) * imgs
+            + torch.sqrt(1 - alphas_cumprod_t) * noise
+        )
