@@ -17,9 +17,10 @@ Diffusion-GAN/
 ├── models/                # Model architecture
 ├── datasets/              # Data loading scripts
 ├── checkpoints/           # Saved models
-├── results/               # Generated images
-├── scripts/               # Training & evaluation scripts
+├── output/                # Generated images
+├── src/                   # Training & inference scripts
 ├── utils/                 # Utility functions
+├── metrics/               # Project evaluation metrics
 ├── README.md              # Project documentation
 ```
 

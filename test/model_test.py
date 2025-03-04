@@ -1,5 +1,6 @@
 import unittest
-from src.model import Generator, Discriminator
+from models.discriminator import Discriminator
+from models.generator import Generator
 import torch
 
 

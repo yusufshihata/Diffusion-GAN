@@ -4,10 +4,11 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.optim as optim
 from tqdm import tqdm
-from src.diffusion_scheduler import AdaptiveDiffusionScheduler
-from src.logger import Logger
-from src.inference import inference
-from src.utils import save_checkpoint
+from utils.diffusion_scheduler import AdaptiveDiffusionScheduler
+from utils.logger import Logger
+from scripts.inference import inference
+from scripts.utils import save_checkpoint
+from metrics.fid import compute_fid_metric
 
 
 def train(
@@ -22,8 +23,8 @@ def train(
     latent_dim: int = 100,
     save_dirs: str = "models",
     checkpoint_interval: int = 1,
-) -> None:
-    device = "cuda"
+):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     generator.to(device).train()
     discriminator.to(device).train()
     noise_scheduler = AdaptiveDiffusionScheduler(device=device)
@@ -43,7 +44,7 @@ def train(
             latent_noise = torch.randn(batch_size, latent_dim, device=device)
             fake_img = generator(latent_noise)
 
-            # Discriminator
+            # --- Train Discriminator ---
             Doptimizer.zero_grad()
             noised_real_img = noise_scheduler.apply_diffusion(real_img, timesteps)
             noised_fake_img = noise_scheduler.apply_diffusion(
@@ -61,7 +62,7 @@ def train(
             d_loss.backward()
             Doptimizer.step()
 
-            # Generator
+            # --- Train Generator ---
             Goptimizer.zero_grad()
             noised_fake_img = noise_scheduler.apply_diffusion(fake_img, timesteps)
             fake_outputs = discriminator(noised_fake_img)
@@ -73,7 +74,10 @@ def train(
             epoch_g_loss += g_loss.item()
             epoch_d_loss += d_loss.item()
 
-        inference(fake_img, 32, save_path="./output/batch_{epoch}.png")
+        inference(fake_img, 32, save_path=f"./output/batch_{epoch}.png")
+
+        fid_score = compute_fid_metric(generator, trainloader, device, latent_dim)
+        print(f"Epoch {epoch + 1}: FID Score: {fid_score:.4f}")
 
         if (epoch + 1) % checkpoint_interval == 0:
             save_checkpoint(
