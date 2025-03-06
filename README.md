@@ -30,7 +30,7 @@ Diffusion-GAN/
 
 First, clone the repository and install dependencies:
 ```bash
-git clone https://github.com/yourusername/diffusion-gan.git
+git clone https://github.com/yusufshihata/diffusion-gan.git
 cd diffusion-gan
 pip install -r requirements.txt
 ```
