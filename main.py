@@ -49,16 +49,21 @@ def main():
         config["optimizer"]["generator"]["lr"] = args.glr
         config["optimizer"]["discriminator"]["lr"] = args.dlr
 
+        gen = Generator(config["training"]["latent_dim"], config["training"]["img_channels"]).to(device)
+        disc = Discriminator(config["training"]["img_channels"]).to(device)
+
         # Optimizer selection
         if config["optimizer"]["type"].lower() == "sgd":
-            Goptimizer = optim.SGD(lr=config["optimizer"]["generator"]["lr"])
-            Doptimizer = optim.SGD(lr=config["optimizer"]["discriminator"]["lr"])
+            Goptimizer = optim.SGD(gen.parameters(), lr=config["optimizer"]["generator"]["lr"])
+            Doptimizer = optim.SGD(disc.parameters(), lr=config["optimizer"]["discriminator"]["lr"])
         elif config["optimizer"]["type"].lower() == "adam":
             Goptimizer = optim.Adam(
+                gen.parameters(),
                 lr=config["optimizer"]["generator"]["lr"],
                 betas=config["optimizer"]["generator"]["betas"],
             )
             Doptimizer = optim.Adam(
+                disc.parameters(),
                 lr=config["optimizer"]["discriminator"]["lr"],
                 betas=config["optimizer"]["discriminator"]["betas"],
             )
@@ -67,8 +72,6 @@ def main():
 
         epochs = config["training"]["epochs"]
 
-        gen = Generator(config["training"]["latent_dim"], config["training"]["img_channels"]).to(device)
-        disc = Discriminator(config["training"]["img_channels"]).to(device)
 
         gcriterion = GeneratorLoss().to(device)
         dcriterion = DiscriminatorLoss().to(device)
